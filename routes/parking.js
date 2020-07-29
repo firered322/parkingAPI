@@ -1,10 +1,7 @@
 const express = require("express");
-const {
-  MAX_REQUEST_COUNT,
-  AVAILABLE_PARKING_SLOTS,
-} = require("../config/constants");
+const { parkCar, unparkCar, parkingStatus } = require("../controller/parking");
+const {checkParkingSpot} = require('../controller/middlewares')
 const router = express.Router();
-
 
 // @desc Show Home
 // @route GET /parker
@@ -14,19 +11,14 @@ router.get("/", (req, res) => {
 
 // @desc Request to park car with the car number
 // @route POST /parker/park
-router.post("/park", (req, res) => {
-  const { carNumber } = req.body;
-});
+router.post("/park", parkCar);
 
 // @desc Request to park car with the car number
 // @route POST /parker/unpark
-router.post("/unpark", (req, res) => {
-  const { carSlot } = req.body;
-});
+router.post("/unpark", checkParkingSpot, unparkCar);
 
-// @desc Show Home
+// @desc Show Parking status
 // @route POST /parker/status
-router.post("/status", (req, res) => {;
-});
+router.post("/status", checkParkingSpot, parkingStatus);
 
 module.exports = router;
